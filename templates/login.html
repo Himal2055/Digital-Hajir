@@ -1,175 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <style>
-     body {
-      background-image: linear-gradient(rgba(0,0,50,0.8),rgba(0,0,50,0.8)), url("../static/myimage.jpg");
-     }
-
-     #form {
-       width: 300px;
-       height: 370px;
-       margin: 20vh auto 0 auto;
-       padding: 20px;
-       background-color: whitesmoke;
-       border-radius: 4px;
-       font-size: 12px;
-     }
-
-     #form h1 {
-      color: #0f2027;
-      text-align: center;
-      margin: 10px;
-     }
-     
-     #form button {
-      padding: 10px;
-      margin-top: 10px;
-      width: 100%;
-      color: white;
-      background-color: rgb(41, 57, 194);
-      border: none;
-      border-radius: 4px;
-     }
-     .input-control{
-      display: flex;
-      flex-direction: column;
-     }
-     .input-control input {
-      border: 2px solid #41375b;
-      border-radius: 4px;
-      display: block;
-      font-size: 10px;
-      padding: 10px;
-      width: 90%;
-      margin: 6px; 
-     }
-     .input-control input:focus {
-      outline: 0;
-     }
-     .input-control label {
-      font-size: 25;
-      margin: 1px 8px;
-     }
-     .input-control p{
-      font-size: 12px;
-      color: red;
-      margin: 2px;
-      padding: 2px;
-       visibility: hidden; 
-     }
-     .error p {
-      visibility: visible;
-     }
-      .success input {
-      border: 3px green solid;
-     }
-     .error input {
-      border-color: #ff3860;
-     }
-   </style>
-    <title>Log In</title>
-
-</head>
-<body>
-    <body>
-        <form id="form" action="/" method="post">
-          <h1>Sign Up</h1>
-          <div class="input-control ">
-             <label for="username">Username:</label>
-             <input id="username" name="username" type="text" placeholder="Username" autocomplete="off">
-             <p>Error Message</p>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>DIGITAL HAJIR : Face Recognition based Attendance System</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap");
+    </style>
+    <link rel="stylesheet" href="/static/style1.css">
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="title">Admin Login</div>
+      {% if message %}
+    <p style="color: red;">{{ message }}</p>
+    {% endif %}
+      <form
+        action="/login"
+        method="post"
+        autocomplete="off"
+        onsubmit="return validateForm()"
+      >
+        <div class="field">
+          <input type="text" name="username"/>
+          <label>Username</label>
+        </div>
+        <div class="field">
+          <input type="password" name="password"/>
+          <label>Password</label>
+        </div>
+        <div class="content">
+          <div class="checkbox">
+            <input type="checkbox" id="remember-me" />
+            <label for="remember-me">Remember me</label>
           </div>
-          <!-- <div class="input-control ">
-            <label for="email">Email:</label>
-            <input id="email" name="email" type="text" placeholder="Email" autocomplete="off">
-            <p>Error Message</p>
-         </div> -->
-         <div class="input-control ">
-          <label for="password">Password:</label>
-          <input id="password" name="password" type="password" placeholder="Password" autocomplete="off">
-          <p>Error Message</p>
-       </div>
-       <button type="submit">Sign In</button>
-        </form>
-        <script type="text/javascript">
-           const form = document.querySelector('#form');
-             const username = document.querySelector('#username');
-              const email = document.querySelector('#email');
-              const password = document.querySelector('#password');
+        </div>
+        <div class="field">
+          <input type="submit" value="Login" />
+        </div>
+      </form>
+    </div>
 
-              form.addEventListener('submit', (event) => {
-              
-                 validateForm();
-                 if(isFormValid()==true){
-                  form.submit();
-                 } else {
-                  event.preventDefault();
-                 }
-             });
-  
-             function isFormValid() {
-              const inputContainers = form.querySelectorAll('.input-control');
-              let result = true;
-              inputContainers.forEach((container) => {
-                if(container.classList.contains('error')){
-                  result = false;
-                }
-              });
-              return result;
-             }
+    <script>
+      function validateForm() {
+        // Get the form input fields
+        var username = document.getElementsByName("username")[0].value;
+        var password = document.getElementsByName("password")[0].value;
 
-              function validateForm() {
-                if (username.value.trim() == '') {
-                  setError(username, 'Username is Required!');
-                } else if (username.value.trim().length < 5 || username.value.trim().length > 15) {
-                  setError(username, 'Username must be min 6 and max 15 characters.');
-                } else {
-                  setSuccess(username);
-                }
-                if(email.value.trim()=='') {
-                  setError(email, 'Email is Required!');
-                } else if(isEmailValid(email.value)){
-                    setSuccess(email);
-                } else {
-                  setError(email, 'Provide a valid email address.');
-                }
-                if(password.value.trim()=='') {
-                  setError(password, 'Password is Required!');
-                } else if(password.value.trim().length < 6 || password.value.trim().length > 15) {
-                  setError(password, 'Password must be min 6 and max 15 characters.');
-                } else {
-                  setSuccess(password);
-                }
-              }
-
-              function setError(element, errorMessage) {
-                const parent = element.parentElement;
-                if (parent.classList.contains('success')) {
-                  parent.classList.remove('success');
-                }
-                parent.classList.add('error');
-                const paragraph = parent.querySelector('p');
-                paragraph.textContent = errorMessage;
-              }
-                    
-              function setSuccess (element) {
-                const parent = element.parentElement;
-                if(parent.classList.contains('error')) {
-                  parent.classList.remove('error');
-                }
-                parent.classList.add('success');
-              }
-
-              function isEmailValid(email) {
-                const reg = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-                return reg.test(email);
-              }
-              
-        </script>   
-           
-</body>
+        // Check if the username and password are empty
+        if (username.trim() === "" || password.trim() === "") {
+          alert("Please enter both username and password.");
+          return false;
+        }
+        return true;
+      }
+    </script>
+  </body>
 </html>
